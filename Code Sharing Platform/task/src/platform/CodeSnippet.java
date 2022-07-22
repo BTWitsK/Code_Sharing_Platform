@@ -1,27 +1,15 @@
 package platform;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 
-@Data
-@NoArgsConstructor
 public class CodeSnippet {
-    private HttpHeaders htmlHeaders = new HttpHeaders();
-    private HttpHeaders apiHeaders = new HttpHeaders();
+    @JsonIgnore
+    private final HttpHeaders htmlHeaders = new HttpHeaders();
+    @JsonIgnore
+    private final HttpHeaders apiHeaders = new HttpHeaders();
 
-    public HttpHeaders getHtmlHeaders() {
-        htmlHeaders.add("Content-Type", "text/html" );
-        return htmlHeaders;
-    }
-
-    public HttpHeaders getApiHeaders() {
-        apiHeaders.add("Content-Type", "application/json");
-        return apiHeaders;
-    }
-
-    private String code = """
+    private final String code = """
             public static void main(String[] args) {
                 System.out.println("Hello");
             }
@@ -41,4 +29,21 @@ public class CodeSnippet {
             </html>
             """.formatted(code);
 
+    public HttpHeaders getHtmlHeaders() {
+        htmlHeaders.add("Content-Type", "text/html" );
+        return htmlHeaders;
+    }
+
+    public HttpHeaders getApiHeaders() {
+        apiHeaders.add("Content-Type", "application/json");
+        return apiHeaders;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }

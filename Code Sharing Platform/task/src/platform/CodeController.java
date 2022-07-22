@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 
 @RestController
 public class CodeController {
@@ -17,6 +19,6 @@ public class CodeController {
 
     @GetMapping("/api/code")
     public ResponseEntity<?> getAPICode() {
-        return new ResponseEntity<>(code, code.getApiHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("code", code.getCode()), code.getApiHeaders(), HttpStatus.OK);
     }
 }

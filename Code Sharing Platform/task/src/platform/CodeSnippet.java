@@ -14,7 +14,7 @@ public class CodeSnippet {
 
     LocalDateTime date;
 
-    private final String code = """
+    private String code = """
             public static void main(String[] args) {
                 System.out.println("Hello");
             }
@@ -37,6 +37,12 @@ public class CodeSnippet {
             </html>
             """.formatted(code, getDate());
 
+    public CodeSnippet() {}
+
+    public CodeSnippet(String code) {
+        this.code = code;
+    }
+
     public HttpHeaders getHtmlHeaders() {
         htmlHeaders.add("Content-Type", "text/html" );
         return htmlHeaders;
@@ -56,6 +62,8 @@ public class CodeSnippet {
     public String getHtml() {
         return html;
     }
+
+    public void setCode(String code) {this.code = code;}
 
     public String getCode() {
         return code;

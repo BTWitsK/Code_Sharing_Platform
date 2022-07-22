@@ -35,7 +35,7 @@ public class CodeSnippet {
             </span>
             </body>
             </html>
-            """.formatted(code);
+            """.formatted(code, getDate());
 
     public HttpHeaders getHtmlHeaders() {
         htmlHeaders.add("Content-Type", "text/html" );

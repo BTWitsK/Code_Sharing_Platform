@@ -1,43 +1,21 @@
 package platform;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.http.HttpHeaders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class CodeSnippet {
-    @JsonIgnore
     private final HttpHeaders htmlHeaders = new HttpHeaders();
-    @JsonIgnore
     private final HttpHeaders apiHeaders = new HttpHeaders();
 
-    private String code = """
-            public static void main(String[] args) {
-                System.out.println("Hello");
-            }
-            """;
+    private String code = "public static void main(String[] args) {System.out.println(\"Hello\");}";
 
-    LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
-    @JsonIgnore
-    String html = """
-            <html>
-            <head>
-                <title>Code</title>
-            </head>
-            <body>
-                <pre id = "code_snippet">
-            %s
-            </pre>
-                <span id = "load_date">
-            %s
-            </span>
-            </body>
-            </html>
-            """.formatted(code, getDate());
+    String html = ("<html><head><title>Code</title></head><body><pre id=\"code_snippet\">%s</pre>" +
+            "<span id=\"load_date\">%s</span></body></html>").formatted(code, getDate());
 
-    @JsonIgnore
     String createHTML = """
             <html>
             <head>
@@ -61,7 +39,6 @@ public class CodeSnippet {
                         };
                         
                         let json = JSON.stringify(object);
-                        
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", '/api/code/new', false)
                         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -78,10 +55,6 @@ public class CodeSnippet {
             """;
 
     public CodeSnippet() {}
-
-    public CodeSnippet(String code) {
-        this.code = code;
-    }
 
     public HttpHeaders getHtmlHeaders() {
         htmlHeaders.add("Content-Type", "text/html" );
@@ -105,7 +78,11 @@ public class CodeSnippet {
 
     public String getCreateHTML() {return createHTML;}
 
-    public void setCode(String code) {this.code = code;}
+    public void setCode(String code) {
+        this.code = code;
+        this.html = ("<html><head><title>Code</title></head><body><pre id=\"code_snippet\">%s</pre>" +
+                "<span id=\"load_date\">%s</span></body></html>").formatted(code, getDate());
+    }
 
     public String getCode() {
         return code;

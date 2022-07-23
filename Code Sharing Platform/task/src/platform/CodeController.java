@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 
 
 @RestController
@@ -25,13 +26,14 @@ public class CodeController {
 
     @GetMapping("/api/code")
     public ResponseEntity<?> getAPICode() {
-        return new ResponseEntity<>(code, code.getApiHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("code", code.getCode(), "date", code.getDate())
+                , code.getApiHeaders(), HttpStatus.OK);
     }
 
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
-        this.code.setCode(newCode.getCode());
-        this.code.setDate();
+        code.setCode(newCode.getCode());
+        code.setDate();
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 }

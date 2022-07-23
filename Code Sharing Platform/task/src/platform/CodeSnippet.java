@@ -13,10 +13,8 @@ public class CodeSnippet {
 
     private LocalDateTime date = LocalDateTime.now();
 
-    String html = ().formatted(code, getDate());
-
     String createHTML = """
-            <html>
+            <html lang="en">
             <head>
                 <title>Create</title>
             </head>
@@ -26,9 +24,7 @@ public class CodeSnippet {
                     Post code to upload here
                     </textarea>
                     <br>
-                        <button id="send_snippet"
-                        type="submit"
-                        onclick="send()">
+                        <button id="send_snippet" type="submit" onclick="send()">
                             Submit
                         </button>
                     <script>
@@ -36,13 +32,13 @@ public class CodeSnippet {
                         let object = {
                             "code": document.getElementById("code_snippet").value
                         };
-                        
+                       \s
                         let json = JSON.stringify(object);
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", '/api/code/new', false)
                         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
                         xhr.send(json);
-                        
+                       \s
                         if (xhr.status == 200) {
                           alert("Success!");
                         }
@@ -51,7 +47,7 @@ public class CodeSnippet {
                 </form>
             </body>
             </html>
-            """;
+                        """;
 
     public CodeSnippet() {}
 
@@ -71,19 +67,21 @@ public class CodeSnippet {
 
     public String getDate() {return date.format(DateTimeFormatter.BASIC_ISO_DATE);}
 
-    public String getHtml() {
-        return html;
-    }
-
     public String getCreateHTML() {return createHTML;}
 
     public void setCode(String code) {
         this.code = code;
-        this.html = ("<html><head><title>Code</title></head><body><pre id=\"code_snippet\">%s</pre>" +
-                "<span id=\"load_date\">%s</span></body></html>").formatted(code, getDate());
     }
 
     public String getCode() {
         return code;
+    }
+
+    @Override
+    public String toString() {
+        return """
+                    "code": "%s",
+                    "date": "%s"
+                """.formatted(getCode(), getDate());
     }
 }

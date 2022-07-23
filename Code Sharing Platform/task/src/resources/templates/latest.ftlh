@@ -7,7 +7,7 @@
         <#list snippets as snippet>
             <tr>
                 <td>${snippet.date}</td>
-                <td>${snippet.name}</td>
+                <td>${snippet.code}</td>
             </tr>
         </#list>
     </table>

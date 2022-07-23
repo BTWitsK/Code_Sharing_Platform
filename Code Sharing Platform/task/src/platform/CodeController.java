@@ -12,6 +12,12 @@ import java.util.Map;
 
 @RestController
 public class CodeController {
+    //todo: implement map to store snippets in memory
+    //todo: deprecate endpoints /code & /api/code
+    //todo: implement get endpoints */code/latest to retrieve latest code snipped
+    //todo: update endpoint /api/code/new to return json with single field id starting from 1
+    //todo: /api/code/latest returns json array with 10 most recently uploaded snippets sorted from newest to oldest
+    //todo: /code/latest returns html containing 10 most recently uploaded snippets with title Latest
     CodeSnippet code = new CodeSnippet();
 
     @GetMapping("/code")

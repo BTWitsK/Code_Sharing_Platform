@@ -13,8 +13,7 @@ public class CodeSnippet {
 
     private LocalDateTime date = LocalDateTime.now();
 
-    String html = ("<html><head><title>Code</title></head><body><pre id=\"code_snippet\">%s</pre>" +
-            "<span id=\"load_date\">%s</span></body></html>").formatted(code, getDate());
+    String html = ().formatted(code, getDate());
 
     String createHTML = """
             <html>

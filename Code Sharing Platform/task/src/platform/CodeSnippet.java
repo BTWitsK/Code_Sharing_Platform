@@ -12,13 +12,13 @@ public class CodeSnippet {
     @JsonIgnore
     private final HttpHeaders apiHeaders = new HttpHeaders();
 
-    LocalDateTime date;
-
     private String code = """
             public static void main(String[] args) {
                 System.out.println("Hello");
             }
             """;
+
+    LocalDateTime date;
 
     @JsonIgnore
     String html = """
@@ -36,6 +36,46 @@ public class CodeSnippet {
             </body>
             </html>
             """.formatted(code, getDate());
+
+    @JsonIgnore
+    String createHTML = """
+            <html>
+            <head>
+                <title>Create</title>
+            </head>
+            <body>
+                <form>
+                    <textarea id="code_snippet">
+                    Post code to upload here
+                    </textarea>
+                    <br>
+                        <button id="send_snippet"
+                        type="submit"
+                        onclick="send()">
+                            Submit
+                        </button>
+                    <script>
+                    function send() {
+                        let object = {
+                            "code": document.getElementById("code_snippet").value
+                        };
+                        
+                        let json = JSON.stringify(object);
+                        
+                        let xhr = new XMLHttpRequest();
+                        xhr.open("POST", '/api/code/new', false)
+                        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                        xhr.send(json);
+                        
+                        if (xhr.status == 200) {
+                          alert("Success!");
+                        }
+                    }
+                    </script>
+                </form>
+            </body>
+            </html>
+            """;
 
     public CodeSnippet() {}
 
@@ -62,6 +102,8 @@ public class CodeSnippet {
     public String getHtml() {
         return html;
     }
+
+    public String getCreateHTML() {return createHTML;}
 
     public void setCode(String code) {this.code = code;}
 

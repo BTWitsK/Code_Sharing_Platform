@@ -12,10 +12,8 @@ import java.util.*;
 
 @RestController
 public class CodeController {
-    //todo: implement get endpoints */code/latest to retrieve latest code snipped
-    //todo: update endpoint /api/code/new to return json with single field id starting from 1
-    //todo: /api/code/latest returns json array with 10 most recently uploaded snippets sorted from newest to oldest
-    //todo: /code/latest returns html containing 10 most recently uploaded snippets with title Latest
+    //todo: implement get /api/code/N returns JSON with the N-th uploaded code snippet
+    //todo: implement /code/N return HTML that contains N-th uploaded code snippet
     CodeSnippet code = new CodeSnippet();
     HashMap<Integer, CodeSnippet> snippetMap = new HashMap<>();
 
@@ -26,19 +24,13 @@ public class CodeController {
 
     @GetMapping("/code/latest")
     public String getLatestSnippets(Model model) {
-        List<CodeSnippet> snippetList = snippetMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
-                .limit(10)
-                .map(Map.Entry::getValue)
-                .toList();
-
-        model.addAttribute("snippets", snippetList);
+        model.addAttribute("snippets", getSnippetList());
         return "latest";
     }
 
     @GetMapping("/api/code/latest")
     public ResponseEntity<?> getAPICode() {
-        return new ResponseEntity<>(snippetMap.get(snippetMap.size()), code.getApiHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(getSnippetList(), code.getApiHeaders(), HttpStatus.OK);
     }
 
     @PostMapping("/api/code/new")
@@ -47,5 +39,13 @@ public class CodeController {
         code.setDate();
         snippetMap.put(snippetMap.size() + 1, code);
         return new ResponseEntity<>(Map.of("id", snippetMap.size()), HttpStatus.OK);
+    }
+
+    public List<CodeSnippet> getSnippetList() {
+        return snippetMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
+                .limit(10)
+                .map(Map.Entry::getValue)
+                .toList();
     }
 }

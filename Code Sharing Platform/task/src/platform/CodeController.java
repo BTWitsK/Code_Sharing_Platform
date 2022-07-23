@@ -3,29 +3,35 @@ package platform;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
 public class CodeController {
-    //todo: implement get /api/code/N returns JSON with the N-th uploaded code snippet
-    //todo: implement /code/N return HTML that contains N-th uploaded code snippet
     CodeSnippet code = new CodeSnippet();
     HashMap<Integer, CodeSnippet> snippetMap = new HashMap<>();
 
-    @GetMapping("/code/new")
-    public ResponseEntity<?> postCode() {
-        return new ResponseEntity<>(code.getCreateHTML(), code.getHtmlHeaders(), HttpStatus.OK);
+    @GetMapping("/code/{id}")
+    public String getCodeById(Model model, @PathVariable int id) {
+        model.addAttribute("snippet", snippetMap.get(id));
+        return "snippet";
     }
 
     @GetMapping("/code/latest")
     public String getLatestSnippets(Model model) {
         model.addAttribute("snippets", getSnippetList());
         return "latest";
+    }
+
+    @GetMapping("/code/new")
+    public ResponseEntity<?> postCode() {
+        return new ResponseEntity<>(code.getCreateHTML(), code.getHtmlHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/code/{id}")
+    public ResponseEntity<?> getAPICodeById(@PathVariable int id) {
+        return new ResponseEntity<>(snippetMap.get(id), HttpStatus.OK);
     }
 
     @GetMapping("/api/code/latest")

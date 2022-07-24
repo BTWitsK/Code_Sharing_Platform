@@ -2,12 +2,13 @@ package platform;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
+@Controller
 public class CodeController {
     CodeSnippet code = new CodeSnippet();
     HashMap<Integer, CodeSnippet> snippetMap = new HashMap<>();
@@ -41,10 +42,8 @@ public class CodeController {
 
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
-        code.setCode(newCode.getCode());
-        code.setDate();
-        snippetMap.put(snippetMap.size() + 1, code);
-        return new ResponseEntity<>(Map.of("id", snippetMap.size()), HttpStatus.OK);
+        snippetMap.put(snippetMap.size() + 1, newCode.setDate());
+        return new ResponseEntity<>(Map.of("id", String.valueOf(snippetMap.size())), HttpStatus.OK);
     }
 
     public List<CodeSnippet> getSnippetList() {

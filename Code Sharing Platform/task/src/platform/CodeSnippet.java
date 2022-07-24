@@ -1,18 +1,22 @@
 package platform;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.http.HttpHeaders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class CodeSnippet {
+    @JsonIgnore
     private final HttpHeaders htmlHeaders = new HttpHeaders();
+    @JsonIgnore
     private final HttpHeaders apiHeaders = new HttpHeaders();
 
     private String code = "public static void main(String[] args) {System.out.println(\"Hello\");}";
 
     private LocalDateTime date = LocalDateTime.now();
 
+    @JsonIgnore
     String createHTML = """
             <html lang="en">
             <head>
@@ -61,8 +65,9 @@ public class CodeSnippet {
         return apiHeaders;
     }
 
-    public void setDate() {
+    public CodeSnippet setDate() {
         this.date = LocalDateTime.now();
+        return this;
     }
 
     public String getDate() {return date.format(DateTimeFormatter.BASIC_ISO_DATE);}

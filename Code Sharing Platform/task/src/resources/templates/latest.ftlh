@@ -6,8 +6,8 @@
     <table>
         <#list snippets as snippet>
             <tr>
-                <td>${snippet.date}</td>
-                <td>${snippet.code}</td>
+                <td><span id="load_date">${snippet.date}</span></td>
+                <td><pre id="code_snippet">${snippet.code}</pre></td>
             </tr>
         </#list>
     </table>

@@ -1,23 +1,44 @@
 package platform;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "SNIPPETS")
 public class CodeSnippet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, name = "ID")
+    private long id;
+
+    @Column(name = "CODE")
+    private String code = "";
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "DATE")
+    private LocalDateTime date;
+
     @JsonIgnore
+    @Transient
     private final HttpHeaders htmlHeaders = new HttpHeaders();
+
     @JsonIgnore
+    @Transient
     private final HttpHeaders apiHeaders = new HttpHeaders();
 
-    private String code = "public static void main(String[] args) {System.out.println(\"Hello\");}";
-
-    private LocalDateTime date = LocalDateTime.now();
-
     @JsonIgnore
-    String createHTML = """
+    @Transient
+    private final String createHTML = """
             <html lang="en">
             <head>
                 <title>Create</title>
@@ -70,7 +91,7 @@ public class CodeSnippet {
         return this;
     }
 
-    public String getDate() {return date.format(DateTimeFormatter.BASIC_ISO_DATE);}
+    public String getDate() {return date.toString();}
 
     public String getCreateHTML() {return createHTML;}
 
@@ -82,11 +103,11 @@ public class CodeSnippet {
         return code;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return """
                     "code": "%s",
                     "date": "%s"
                 """.formatted(getCode(), getDate());
-    }
+    }*/
 }

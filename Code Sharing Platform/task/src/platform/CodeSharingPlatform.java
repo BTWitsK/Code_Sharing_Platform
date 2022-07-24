@@ -12,4 +12,6 @@ public class CodeSharingPlatform {
     }
 
 }
-
+//todo: update CodeSnippet class to entity
+//todo: implement codesnippet service and repo
+//todo: update endpoints to reflect new data storage

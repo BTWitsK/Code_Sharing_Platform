@@ -1,6 +1,5 @@
 package platform;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "SNIPPETS")
 public class CodeSnippet {
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, name = "ID")
     private long id;
@@ -22,7 +22,6 @@ public class CodeSnippet {
     @Column(name = "CODE")
     private String code = "";
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "DATE")
     private LocalDateTime date;
 
@@ -90,19 +89,8 @@ public class CodeSnippet {
 
     public String getCreateHTML() {return createHTML;}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getCode() {
         return code;
     }
 
-    @Override
-    public String toString() {
-        return """
-                    "code": "%s",
-                    "date": "%s"
-                """.formatted(getCode(), getDate());
-    }
 }

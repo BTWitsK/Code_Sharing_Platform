@@ -13,7 +13,6 @@ import java.util.*;
 public class CodeController {
 
     CodeSnippet code = new CodeSnippet();
-    HashMap<Integer, CodeSnippet> snippetMap = new HashMap<>();
     @Autowired
     CodeService codeService;
 
@@ -47,6 +46,6 @@ public class CodeController {
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
         codeService.addSnippet(newCode);
-        return new ResponseEntity<>(Map.of("id", newCode.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("id", String.valueOf(newCode.getId())), HttpStatus.OK);
     }
 }

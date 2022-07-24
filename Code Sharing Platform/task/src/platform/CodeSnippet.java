@@ -2,9 +2,7 @@ package platform;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpHeaders;
 
 import javax.persistence.*;
@@ -74,8 +72,6 @@ public class CodeSnippet {
             </html>
                         """;
 
-    public CodeSnippet() {}
-
     public HttpHeaders getHtmlHeaders() {
         htmlHeaders.add("Content-Type", "text/html" );
         return htmlHeaders;
@@ -86,12 +82,11 @@ public class CodeSnippet {
         return apiHeaders;
     }
 
-    public CodeSnippet setDate() {
+    public void setDate() {
         this.date = LocalDateTime.now();
-        return this;
     }
 
-    public String getDate() {return date.toString();}
+    public LocalDateTime getDate() {return date;}
 
     public String getCreateHTML() {return createHTML;}
 
@@ -103,11 +98,11 @@ public class CodeSnippet {
         return code;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return """
                     "code": "%s",
                     "date": "%s"
                 """.formatted(getCode(), getDate());
-    }*/
+    }
 }

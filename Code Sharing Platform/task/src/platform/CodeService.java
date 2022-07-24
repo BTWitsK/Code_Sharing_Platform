@@ -3,7 +3,7 @@ package platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CodeService {
@@ -21,5 +21,15 @@ public class CodeService {
     public void addSnippet(CodeSnippet snippet) {
         snippet.setDate();
         codeRepository.save(snippet);
+    }
+
+    public List<CodeSnippet> getSnippetList() {
+        List<CodeSnippet> codeList = new ArrayList<>();
+        codeRepository.findAll().forEach(codeList::add);
+
+        return codeList.stream()
+                .sorted(Comparator.comparing(CodeSnippet::getDate).reversed())
+                .limit(10)
+                .toList();
     }
 }

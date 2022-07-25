@@ -15,12 +15,7 @@ public class CodeService {
     }
 
     public Optional<CodeSnippet> getSnippetByID(String id) {
-        CodeSnippet snippet = codeRepository.findById(id).get();
-        if (snippet.getViews() > 0) {
-            snippet.setViews(snippet.getViews() - 1);
-            return Optional.of(snippet);
-        }
-        return Optional.empty();
+        return codeRepository.findById(id);
     }
 
     public void addSnippet(CodeSnippet snippet) {
@@ -29,11 +24,17 @@ public class CodeService {
         codeRepository.save(snippet);
     }
 
+    public void updateSnippet(CodeSnippet snippet) {
+        snippet.updateViews();
+        codeRepository.save(snippet);
+    }
+
     public List<CodeSnippet> getSnippetList() {
         List<CodeSnippet> codeList = new ArrayList<>();
         codeRepository.findAll().forEach(codeList::add);
 
         return codeList.stream()
+                .filter(code -> !code.isRestricted())
                 .sorted(Comparator.comparing(CodeSnippet::getDate).reversed())
                 .limit(10)
                 .toList();

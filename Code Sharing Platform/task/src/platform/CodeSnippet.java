@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.http.HttpHeaders;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,13 +23,17 @@ public class CodeSnippet {
     private String code = "";
 
     @Column(name = "DATE")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Column(name = "VIEWS")
     private long views;
 
     @Column(name = "SECONDS")
-    private long seconds;
+    private long time;
+
+    @JsonIgnore
+    @Column(name = "RESTRICTED")
+    boolean restricted = false;
 
     @JsonIgnore
     @Transient
@@ -46,6 +51,8 @@ public class CodeSnippet {
                 <title>Create</title>
             </head>
             <body>
+                <input id="time_restriction" type="text"/>
+                <input id="views_restriction" type="text"/>
                 <form>
                     <textarea id="code_snippet">
                     Post code to upload here
@@ -96,6 +103,22 @@ public class CodeSnippet {
 
     public String getCode() {
         return code;
+    }
+
+    public void setRestricted(Boolean flag) {
+        this.restricted = flag;
+    }
+
+    public boolean isRestricted() {
+        return this.restricted;
+    }
+
+    public Long getTime() {
+        return time - Duration.between(date.toLocalTime(), LocalDateTime.now().toLocalTime()).toSecondsPart();
+    }
+
+    public void updateViews() {
+        views -= 1;
     }
 
 }

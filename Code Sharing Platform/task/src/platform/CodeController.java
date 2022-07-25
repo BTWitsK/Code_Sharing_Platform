@@ -34,7 +34,20 @@ public class CodeController {
 
     @GetMapping("/api/code/{id}")
     public ResponseEntity<?> getAPICodeById(@PathVariable String id) {
-        return new ResponseEntity<>(codeService.getSnippetByID(id).get(), HttpStatus.OK);
+        Optional<CodeSnippet> code = codeService.getSnippetByID(id);
+        if (code.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else if (!code.get().isRestricted()) {
+            return new ResponseEntity<>(code.get(), HttpStatus.OK);
+        } else if (code.get().isRestricted()) {
+            if (code.get().getViews() <= 0 || code.get().getTime() <= 0) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                codeService.updateSnippet(code.get());
+                return new ResponseEntity<>(code.get(), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/api/code/latest")
@@ -44,6 +57,7 @@ public class CodeController {
 
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
+        newCode.setRestricted(newCode.getTime() > 0 || newCode.getViews() > 0);
         codeService.addSnippet(newCode);
         return new ResponseEntity<>(Map.of("id", newCode.getId()), HttpStatus.OK);
     }

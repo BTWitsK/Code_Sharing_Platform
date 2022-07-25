@@ -1,5 +1,6 @@
 package platform;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.http.HttpHeaders;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data
@@ -22,6 +24,7 @@ public class CodeSnippet {
     @Column(name = "CODE")
     private String code = "";
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "DATE")
     private LocalDateTime date = LocalDateTime.now();
 
@@ -97,7 +100,14 @@ public class CodeSnippet {
         this.date = LocalDateTime.now();
     }
 
-    public LocalDateTime getDate() {return date;}
+    @JsonIgnore
+    public String getFormattedDate() {
+        return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
 
     public String getCreateHTML() {return createHTML;}
 
@@ -114,11 +124,12 @@ public class CodeSnippet {
     }
 
     public Long getTime() {
-        return time - Duration.between(date.toLocalTime(), LocalDateTime.now().toLocalTime()).toSecondsPart();
+        long seconds =  time - Duration.between(date.toLocalTime(), LocalDateTime.now().toLocalTime()).toSecondsPart();
+
+        return seconds < 0? 0 : seconds;
     }
 
     public void updateViews() {
         views -= 1;
     }
-
 }

@@ -9,10 +9,14 @@
 </head>
 <body>
 <#if snippet.isRestricted()>
-<p>${snippet.views} more views allowed</p>
-<p>The code will be available for ${snippet.seconds} seconds</p>
+    <#if snippet.time gt 0>
+        <span id="time_restriction">The code will be available for ${snippet.time} seconds</span>
+    </#if>
+    <#if snippet.views gt 0>
+        <span id="views_restriction">${snippet.views - 1} more views allowed</span>
+    </#if>
 </#if>
-<span id="load_date">${snippet.date}</span>
+<span id="load_date">${snippet.getFormattedDate()}</span>
 <pre id="code_snippet"><code>${snippet.code}</code></pre>
 </body>
 </html>

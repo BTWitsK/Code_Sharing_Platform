@@ -11,13 +11,12 @@ import java.util.*;
 
 @Controller
 public class CodeController {
-
     CodeSnippet code = new CodeSnippet();
     @Autowired
     CodeService codeService;
 
     @GetMapping("/code/{id}")
-    public String getCodeById(Model model, @PathVariable int id) {
+    public String getCodeById(Model model, @PathVariable String id) {
         model.addAttribute("snippet", codeService.getSnippetByID(id).get());
         return "snippet";
     }
@@ -34,7 +33,7 @@ public class CodeController {
     }
 
     @GetMapping("/api/code/{id}")
-    public ResponseEntity<?> getAPICodeById(@PathVariable int id) {
+    public ResponseEntity<?> getAPICodeById(@PathVariable String id) {
         return new ResponseEntity<>(codeService.getSnippetByID(id).get(), HttpStatus.OK);
     }
 
@@ -46,6 +45,6 @@ public class CodeController {
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
         codeService.addSnippet(newCode);
-        return new ResponseEntity<>(Map.of("id", String.valueOf(newCode.getId())), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("id", newCode.getId()), HttpStatus.OK);
     }
 }

@@ -14,11 +14,17 @@ public class CodeService {
         this.codeRepository = codeRepository;
     }
 
-    public Optional<CodeSnippet> getSnippetByID(long id) {
-        return codeRepository.findById(id);
+    public Optional<CodeSnippet> getSnippetByID(String id) {
+        CodeSnippet snippet = codeRepository.findById(id).get();
+        if (snippet.getViews() > 0) {
+            snippet.setViews(snippet.getViews() - 1);
+            return Optional.of(snippet);
+        }
+        return Optional.empty();
     }
 
     public void addSnippet(CodeSnippet snippet) {
+        snippet.setId(String.valueOf(UUID.randomUUID()));
         snippet.setDate();
         codeRepository.save(snippet);
     }

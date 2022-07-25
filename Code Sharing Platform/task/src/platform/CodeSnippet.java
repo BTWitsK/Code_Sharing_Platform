@@ -15,15 +15,20 @@ import java.time.LocalDateTime;
 public class CodeSnippet {
     @Id
     @JsonIgnore
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, name = "ID")
-    private long id;
+    @Column(name = "ID")
+    private String id;
 
     @Column(name = "CODE")
     private String code = "";
 
     @Column(name = "DATE")
     private LocalDateTime date;
+
+    @Column(name = "VIEWS")
+    private long views;
+
+    @Column(name = "SECONDS")
+    private long seconds;
 
     @JsonIgnore
     @Transient

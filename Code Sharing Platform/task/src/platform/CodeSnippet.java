@@ -18,25 +18,16 @@ import java.time.format.DateTimeFormatter;
 public class CodeSnippet {
     @Id
     @JsonIgnore
-    @Column(name = "ID")
     private String id;
-
-    @Column(name = "CODE")
     private String code = "";
-
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "DATE")
     private LocalDateTime date = LocalDateTime.now();
-
-    @Column(name = "VIEWS")
     private long views;
-
-    @Column(name = "SECONDS")
     private long time;
-
     @JsonIgnore
-    @Column(name = "RESTRICTED")
     boolean restricted = false;
+    @JsonIgnore
+    String restriction = "";
 
     @JsonIgnore
     @Transient
@@ -115,8 +106,15 @@ public class CodeSnippet {
         return code;
     }
 
-    public void setRestricted(Boolean flag) {
-        this.restricted = flag;
+    public void setRestricted(Boolean time, Boolean views) {
+        if (time && views) {
+            this.restricted = true;
+            this.restriction = "TimeAndViews";
+        } else if (time || views) {
+            this.restricted = true;
+            this.restriction = time ? "Time" : "Views";
+        }
+
     }
 
     public boolean isRestricted() {
@@ -130,6 +128,9 @@ public class CodeSnippet {
     }
 
     public void updateViews() {
+        if (views == 0) {
+            return;
+        }
         views -= 1;
     }
 }

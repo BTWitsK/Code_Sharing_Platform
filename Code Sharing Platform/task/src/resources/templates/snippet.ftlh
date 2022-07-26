@@ -9,11 +9,13 @@
 </head>
 <body>
 <#if snippet.isRestricted()>
-    <#if snippet.time gt 0>
+    <#if snippet.restriction == "TimeAndViews">
         <span id="time_restriction">The code will be available for ${snippet.time} seconds</span>
-    </#if>
-    <#if snippet.views gt 0>
-        <span id="views_restriction">${snippet.views - 1} more views allowed</span>
+        <span id="views_restriction">${snippet.views} more views allowed</span>
+    <#elseif snippet.restriction == "Time">
+        <span id="time_restriction">The code will be available for ${snippet.time} seconds</span>
+    <#elseif snippet.restriction == "Views">
+        <span id="views_restriction">${snippet.views} more views allowed</span>
     </#if>
 </#if>
 <span id="load_date">${snippet.getFormattedDate()}</span>

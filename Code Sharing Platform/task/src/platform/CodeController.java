@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -15,10 +16,27 @@ public class CodeController {
     @Autowired
     CodeService codeService;
 
-    @GetMapping("/code/{id}")
+    @GetMapping(value = "/code/{id}")
     public String getCodeById(Model model, @PathVariable String id) {
-        model.addAttribute("snippet", codeService.getSnippetByID(id).get());
-        return "snippet";
+        Optional<CodeSnippet> code = codeService.getSnippetByID(id);
+
+        if (code.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } else if (code.get().isRestricted()) {
+            boolean timeFails = "Time".equals(code.get().restriction) && code.get().getTime() < 1;
+            boolean viewsFails = "Views".equals(code.get().restriction) && code.get().getViews() < 1;
+
+            if (timeFails || viewsFails) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            } else {
+                codeService.updateSnippet(code.get());
+                model.addAttribute("snippet", codeService.getSnippetByID(id).get());
+                return "snippet";
+            }
+        } else {
+            model.addAttribute("snippet", codeService.getSnippetByID(id).get());
+            return "snippet";
+        }
     }
 
     @GetMapping("/code/latest")
@@ -35,10 +53,14 @@ public class CodeController {
     @GetMapping("/api/code/{id}")
     public ResponseEntity<?> getAPICodeById(@PathVariable String id) {
         Optional<CodeSnippet> code = codeService.getSnippetByID(id);
+
         if (code.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (code.get().isRestricted()) {
-            if (code.get().getViews() < 1 || code.get().getTime() < 0) {
+            boolean timeFails = code.get().restriction.contains("Time") && code.get().getTime() < 1;
+            boolean viewsFails = code.get().restriction.contains("Views") && code.get().getViews() < 1;
+
+            if (timeFails || viewsFails) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
                 codeService.updateSnippet(code.get());
@@ -56,7 +78,7 @@ public class CodeController {
 
     @PostMapping("/api/code/new")
     public ResponseEntity<?> postAPICode(@RequestBody CodeSnippet newCode) {
-        newCode.setRestricted(newCode.getTime() > 0 || newCode.getViews() > 0);
+        newCode.setRestricted(newCode.getTime() > 0, newCode.getViews() > 0);
         if (newCode.getTime() < 0) {
             newCode.setTime(0);
         }
@@ -65,6 +87,7 @@ public class CodeController {
             newCode.setViews(0);
         }
         codeService.addSnippet(newCode);
+
         return new ResponseEntity<>(Map.of("id", newCode.getId()), HttpStatus.OK);
     }
 }

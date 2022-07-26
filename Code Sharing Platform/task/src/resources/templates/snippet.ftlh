@@ -8,6 +8,7 @@
     <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
+<span id="load_date">${snippet.getFormattedDate()}</span>
 <#if snippet.isRestricted()>
     <#if snippet.restriction == "TimeAndViews">
         <span id="time_restriction">The code will be available for ${snippet.time} seconds</span>
@@ -18,7 +19,11 @@
         <span id="views_restriction">${snippet.views} more views allowed</span>
     </#if>
 </#if>
-<span id="load_date">${snippet.getFormattedDate()}</span>
-<pre id="code_snippet"><code>${snippet.code}</code></pre>
+</div>
+<pre id="code_snippet" style="background-color:#9facab;
+border-radius:4px;
+font-size:16px;
+padding:15px;
+margin:5px;"><code>${snippet.code}</code></pre></p>
 </body>
 </html>

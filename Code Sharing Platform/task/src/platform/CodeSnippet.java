@@ -10,6 +10,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * single row representation of SNIPPETS table used to interact with database
+ */
 @Entity
 @Data
 @NoArgsConstructor

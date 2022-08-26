@@ -32,13 +32,13 @@ What you’ll do and what you’ll learn:
 <details open="open">
   <summary>Task Details</summary>
   <ol>
-  <li><a href="/Tasks/1-Show-The-Code/README.md">Show the Code!</a>: Show the same code snippet over and over in the API 
+  <li><a href="Tasks/1-Show-The-Code/README.md">Show the Code!</a>: Show the same code snippet over and over in the API 
     and the web interface. </li>
-  <li><a href="/Tasks/2-POST-Updates/README.md">POST updates</a>: Use POST requests to update the snippet and make your 
+  <li><a href="Tasks/2-POST-Updates/README.md">POST updates</a>: Use POST requests to update the snippet and make your 
     program display the time of the most recent update. </li>
-  <li><a href="/Tasks/3-Snippets-Feed/README.md">Snippets feed</a>: Use the template engine FreeMarker to easily 
+  <li><a href="Tasks/3-Snippets-Feed/README.md">Snippets feed</a>: Use the template engine FreeMarker to easily 
     implement the latest snippets feed. </li>
-  <li><a href="/Tasks/4-Work-With-The-Database/README.md">Work with the Database</a>: Use a database to store all 
+  <li><a href="Tasks/4-Work-With-The-Database/README.md">Work with the Database</a>: Use a database to store all 
     the code snippets. </li>
   <li><a href="Tasks/5-Super-Secret-Snippets/README.md">Super secret snippets</a>: Implement a few access restrictions
     for the top-secret code snippets. </li>

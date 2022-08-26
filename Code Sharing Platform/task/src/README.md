@@ -40,7 +40,7 @@ What you’ll do and what you’ll learn:
     implement the latest snippets feed. </li>
   <li><a href="/Tasks/4-Work-With-The-Database/README.md">Work with the Database</a>: Use a database to store all 
     the code snippets. </li>
-  <li><a href="../task/src/Tasks/5-Super-Secret-Snippets/README.md">Super secret snippets</a>: Implement a few access restrictions
+  <li><a href="Tasks/5-Super-Secret-Snippets/README.md">Super secret snippets</a>: Implement a few access restrictions
     for the top-secret code snippets. </li>
   </ol>
 </details>
